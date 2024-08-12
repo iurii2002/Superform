@@ -2,7 +2,7 @@ import requests
 import urllib.parse
 
 from eth_account.account import ChecksumAddress
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, List
 from fake_useragent import UserAgent
 
 

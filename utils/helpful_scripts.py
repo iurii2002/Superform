@@ -192,7 +192,6 @@ def send_tx_with_data(to: ChecksumAddress, w3: Web3, account: LocalAccount, expl
     tx.update({'data': data})
 
     estimate_gas = int(w3.eth.estimate_gas(tx) * 1.05)
-    # estimate_gas = int(800_000 * random.randint(100, 150) / 100)
     tx.update({'gas': estimate_gas})
 
     signed_tx = w3.eth.account.sign_transaction(tx, account.key)
@@ -220,11 +219,11 @@ def load_wallets(path: str):
     return [line.replace("\n", "") for line in file.readlines()]
 
 
-def load_accounts_from_keys_encrypted(path: str) -> List[LocalAccount]:
-    with open('unlock.key', 'rb') as unlock:
+def load_accounts_from_keys_encrypted(file_path: str, key_path: str) -> List[LocalAccount]:
+    with open(key_path, 'rb') as unlock:
         key = unlock.read()
         f = Fernet(key)
-        file = Path(path)
+        file = Path(file_path)
         with open(file, 'rb') as encrypted_file:
             encrypted = encrypted_file.read()
             # decrypt the file
@@ -233,7 +232,7 @@ def load_accounts_from_keys_encrypted(path: str) -> List[LocalAccount]:
             return [Account.from_key(line.replace("\r", "")) for line in decrypted.decode().split('\n')]
 
 
-def send_error_message(message: str, script: str):
+def send_error_message(message: str, script: str) -> None:
     bot_token = _tg_token
     bot_chatID = _tg_chat_id
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + \
@@ -241,7 +240,7 @@ def send_error_message(message: str, script: str):
     requests.get(send_text)
 
 
-def get_network_by_chain_id(chain_id):
+def get_network_by_chain_id(chain_id) -> Network:
     return {
         0: ArbitrumRPC,
         1: ArbitrumRPC,
@@ -298,7 +297,7 @@ def get_network_by_chain_id(chain_id):
     }[chain_id]
 
 
-def get_random_word(amount, separator=""):
+def get_random_word(amount, separator="") -> str:
     word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
     response = requests.get(word_site)
     words = response.content.splitlines()

@@ -7,7 +7,7 @@ from web3 import Web3
 from web3.contract import Contract
 from eth_account.signers.local import LocalAccount
 from eth_account.account import ChecksumAddress
-from other.helpful_scripts import get_network_by_chain_id, get_native, get_balance, get_decimals
+from utils.helpful_scripts import get_network_by_chain_id, get_native, get_balance, get_decimals
 
 
 class MyClient:
