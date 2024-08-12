@@ -25,6 +25,11 @@ abi_files = {
 }
 
 
+"""
+THE LIST OF HELPFUL FUNCTIONS
+NOT ALL OF THEM USED IN EVERY PROJECT
+"""
+
 def load_logger(file_log):
     # LOGGING SETTING
     logger.remove()
