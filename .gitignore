@@ -1,0 +1,22 @@
+# exclude system files
+/.idea
+/__pycache__
+/*/__pycache__
+/*/*/__pycache__
+
+# exclude envoironment
+/.based
+
+# exclude keys/wallets file
+/files/keys
+/files/error_wallets*
+/files/wallets
+
+#exclude logs
+/logs/
+
+#exclude errors
+/errors/
+
+# test file
+test.py
