@@ -237,14 +237,6 @@ def load_accounts_from_keys_encrypted(file_path: str, key_path: str) -> List[Loc
             return [Account.from_key(line.replace("\r", "")) for line in decrypted.decode().split('\n')]
 
 
-def send_error_message(message: str, script: str) -> None:
-    bot_token = _tg_token
-    bot_chatID = _tg_chat_id
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + \
-                bot_chatID + '&parse_mode=Markdown&text=' + message + 'script: ' + script
-    requests.get(send_text)
-
-
 def get_network_by_chain_id(chain_id) -> Network:
     return {
         0: ArbitrumRPC,
@@ -359,3 +351,30 @@ def approve(account: LocalAccount, w3: Web3, token_address: ChecksumAddress, spe
     raw_tx = erc20_contract.functions.approve(spender, MAX_APPROVAL_INT)
     return check_tx_status(w3=w3, tx_hash=send_transaction(raw_tx=raw_tx, w3=w3, account=account,
                                                            explorer=explorer, eip1559=eip1559))
+
+
+def catch_errors(sleep_times):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as err:
+                exception_type = type(err)
+                if exception_type in sleep_times:
+                    sleep_time = random.randint(*sleep_times[exception_type])
+                else:
+                    sleep_time = random.randint(*sleep_times['other_exception'])
+                logger.error(f'Something went wrong with script {script_name} - {exception_type.__name__}: {err}, Sleeping for {sleep_time} seconds')
+                send_error_message(message=f"Caught {exception_type.__name__}: {err} ", script=script_name)
+                time.sleep(sleep_time)
+        return wrapper
+    return decorator
+
+
+def send_error_message(message: str, script: str):
+    bot_token = _tg_token
+    bot_chatID = _tg_chat_id
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + \
+                bot_chatID + f'&parse_mode=Markdown&text=Script: {script}. {message}'
+    requests.get(send_text)

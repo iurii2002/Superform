@@ -1,5 +1,6 @@
 log_file = './logs/superform'
 keys_file = './files/keys'
+wallets_file = './files/wallets'
 
 sleep_between_accounts = (5, 30)
 
