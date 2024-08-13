@@ -17,7 +17,7 @@ from eth_account.signers.local import LocalAccount
 from eth_account.account import ChecksumAddress
 
 from utils.constants import MAX_APPROVAL_INT
-from config import _tg_token, _tg_chat_id
+from config import tg_token, tg_chat_id, script_name
 from utils.networks import *
 
 abi_files = {
@@ -29,6 +29,7 @@ abi_files = {
 THE LIST OF HELPFUL FUNCTIONS
 NOT ALL OF THEM USED IN EVERY PROJECT
 """
+
 
 def load_logger(file_log):
     # LOGGING SETTING
@@ -366,15 +367,14 @@ def catch_errors(sleep_times):
                 else:
                     sleep_time = random.randint(*sleep_times['other_exception'])
                 logger.error(f'Something went wrong with script {script_name} - {exception_type.__name__}: {err}, Sleeping for {sleep_time} seconds')
-                send_error_message(message=f"Caught {exception_type.__name__}: {err} ", script=script_name)
+                if len(tg_token) > 0 and len(tg_chat_id) > 0:
+                    send_error_message(message=f"Caught {exception_type.__name__}: {err} ", script=script_name)
                 time.sleep(sleep_time)
         return wrapper
     return decorator
 
 
 def send_error_message(message: str, script: str):
-    bot_token = _tg_token
-    bot_chatID = _tg_chat_id
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + \
-                bot_chatID + f'&parse_mode=Markdown&text=Script: {script}. {message}'
+    send_text = 'https://api.telegram.org/bot' + tg_token + '/sendMessage?chat_id=' + \
+                tg_chat_id + f'&parse_mode=Markdown&text=Script: {script}. {message}'
     requests.get(send_text)
