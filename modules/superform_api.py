@@ -180,10 +180,10 @@ class SuperFormApi:
     USER METHODS
     """
 
-    def calculate_user_deposit(self, params: Dict) -> Dict:
+    def calculate_user_deposit(self, request_data: Dict) -> Dict:
         """
         Calculates the deposit data for tx
-        :param params: Dict:
+        :param request_data: Dict:
             user_address: (address) self.address
             from_token_address: (address) token address - 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE for native
             from_chain_id: (int)
@@ -197,14 +197,14 @@ class SuperFormApi:
             force: (int) - timestamp
         :return: Internal data to be used to start deposit process
         """
-        path = 'deposit/calculate?'
-        uri = self._create_api_uri(path, params)
-        return self._request(method='get', uri=uri)
+        path = 'deposit/calculate/'
+        uri = self._create_api_uri(path)
+        return self._request(method='post', uri=uri, json=[request_data])
 
-    def calculate_user_withdrawal(self, params: Dict) -> Dict:
+    def calculate_user_withdrawal(self, request_data: Dict) -> Dict:
         """
         Calculates the withdrawal data for tx
-        :param params: Dict:
+        :param request_data: Dict:
             user_address: (address) self.address
             refund_address: (address) self.address
             vault_id: (str)
@@ -219,9 +219,9 @@ class SuperFormApi:
             force: (int) - timestamp
         :return: Internal data to be used to start withdrawal process
         """
-        path = 'withdraw/calculate?'
-        uri = self._create_api_uri(path, params)
-        return self._request(method='get', uri=uri)
+        path = 'withdraw/calculate/'
+        uri = self._create_api_uri(path)
+        return self._request(method='post', uri=uri, json=[request_data])
 
     def start_deposit(self, request_data) -> Dict:
         """

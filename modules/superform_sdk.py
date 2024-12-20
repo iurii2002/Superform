@@ -249,6 +249,19 @@ class MySuperform(MyClient):
                 result.append(reward)
         return result
 
+    def get_user_safari_rewards(self, season: int):
+        return self.superform_api.get_available_rewards(address=self.address, season=season)
+
+    def get_claimed_nfts(self):
+        """
+        :return: The list of safari rewards to claim
+        """
+        for season in range(1,7):
+            rewards = self.get_user_safari_rewards(season=season)
+            for reward in rewards:
+                if reward['status'] == 'claimed':
+                    print(f'Season {season}, {reward["tier"]}')
+
     def claim_all_rewards(self, season: int) -> bool:
         """
         Claims all possible rewards for account in particular safari season

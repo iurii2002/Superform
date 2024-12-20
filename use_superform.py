@@ -62,6 +62,11 @@ def deposit_to_morpho(account, token_address=eth_address):
 def withdraw_from_morpho(account):
     return withdraw(account, morpho_well_eth_vault_id)
 
+@catch_errors(sleeping_time)
+def check_rewards(account):
+    super_bot = MySuperform(account=account)
+    return super_bot.get_claimed_nfts()
+
 
 def use_script():
     accounts = load_accounts_from_keys(keys_file)
@@ -77,8 +82,8 @@ def use_script():
         logger.info(f'Started for wallet {account.address}')
         random_sleep = random.randint(*sleeping_time['default'])
 
-        # todo uncomment necessary script the script
-        claim_rewards(account=account, season=3)
+        # todo uncomment necessary script the run
+
         # withdraw_from_morpho(account=account)
         # deposit_to_morpho(account=account)
         # get_portfolio(account=account)

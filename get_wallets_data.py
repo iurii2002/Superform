@@ -11,7 +11,7 @@ from utils.helpful_scripts import load_wallets, load_logger, catch_errors
 @catch_errors(sleeping_time)
 def get_points_wallets(address):
     api_bot = SuperFormApi()
-    logger.info(api_bot.get_safari_points(address=address, season=4))
+    logger.info(api_bot.get_safari_points(address=address, season=7))
 
 
 def use_script():
