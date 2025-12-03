@@ -161,7 +161,7 @@ class AirdropRegistrator:
         if self.storage.exists(self.account.address):
             account_data = self.storage.get(self.account.address)
             logger.success(f'{self.account.address} already registered')
-            logger.success(f'Account points - {self.get_account_points(account_data)}')
+            logger.success(f'Account points - {account_data}')
             raise BreakTimer()
 
         if self.login():
