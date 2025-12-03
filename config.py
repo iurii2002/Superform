@@ -1,7 +1,7 @@
 from utils.constants import BreakTimer
 
 script_name = 'Superform'
-
+capmonster_key = ''
 
 log_file = './logs/superform'
 keys_file = './files/keys'

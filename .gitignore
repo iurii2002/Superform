@@ -11,6 +11,7 @@
 /files/keys
 /files/error_wallets*
 /files/wallets
+/files/proxies
 
 #exclude logs
 /logs/
@@ -20,3 +21,4 @@
 
 # test file
 test.py
+.env
